@@ -50,7 +50,7 @@ class GamesViewModel: ObservableObject {
     let request = URLRequest(url: components.url!)
     let task = URLSession.shared.dataTask(with: request) { (data, _, _) in
       guard let data = data else { return }
-      let game = try! JSONDecoder().decode(Game.self, from: data)
+      let game = try? JSONDecoder().decode(Game.self, from: data)
       DispatchQueue.main.async {
         self.gameDetail = game
         self.isLoading = false

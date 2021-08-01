@@ -18,8 +18,8 @@ struct GameDetailView: View {
         ProgressView()
           .frame(width: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
       } else {
-        if ((gameViewModel.gameDetail?.background_image) != nil) {
-          URLImage(URL(string: gameViewModel.gameDetail?.background_image ?? "")!) {
+        if gameViewModel.gameDetail?.backgroundImage != nil {
+          URLImage(URL(string: gameViewModel.gameDetail?.backgroundImage ?? "")!) {
             EmptyView()
           } inProgress: { _ in
             Color.gray
@@ -53,7 +53,7 @@ struct GameDetailView: View {
             .font(.system(size: 14))
             .foregroundColor(.gray)
             .padding(.bottom, 1)
-          Text("\(String(gameViewModel.gameDetail?.rating ?? 0)) (\(gameViewModel.gameDetail?.ratings_count ?? 0))")
+          Text("\(String(gameViewModel.gameDetail?.rating ?? 0)) (\(gameViewModel.gameDetail?.ratingsCount ?? 0))")
             .padding(.bottom, 15)
           
           Text("Website")
@@ -68,7 +68,7 @@ struct GameDetailView: View {
             .font(.system(size: 14))
             .foregroundColor(.gray)
             .padding(.bottom, 1)
-          Text(gameViewModel.gameDetail?.description_raw ?? "-")
+          Text(gameViewModel.gameDetail?.description ?? "-")
             .padding(.bottom, 15)
         }
         .frame(maxWidth: .infinity, alignment: .leading)

@@ -13,8 +13,8 @@ struct GameGrid: View {
   
   var body: some View {
     VStack(alignment: .leading) {
-      if ((game.background_image) != nil) {
-        URLImage(URL(string: game.background_image ?? "")!) {
+      if game.backgroundImage != nil {
+        URLImage(URL(string: game.backgroundImage ?? "")!) {
           EmptyView()
         } inProgress: { _ in
           Color.gray
@@ -68,9 +68,11 @@ struct GameGrid_Previews: PreviewProvider {
     id: 1,
     name: "FIFA 2020",
     released: "01-01-2020",
-    background_image: "https://media.rawg.io/media/games/84d/84da2ac3fdfc6507807a1808595afb12.jpg",
+    backgroundImage: "https://media.rawg.io/media/games/84d/84da2ac3fdfc6507807a1808595afb12.jpg",
     rating: 4.5,
-    ratings_count: 1234
+    ratingsCount: 1234,
+    website: "",
+    description: ""
   )
   
   static var previews: some View {

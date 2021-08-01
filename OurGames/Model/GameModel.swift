@@ -4,20 +4,30 @@
 //
 //  Created by Dans Multipro on 10/07/21.
 //
-
 import Foundation
 
 struct Game: Codable {
-  var id: Int
-  var name: String
-  var released: String?
-  var background_image: String?
-  var rating: Double?
-  var ratings_count: Int?
-  var website: String?
-  var description_raw: String?
+  let id: Int
+  let name: String
+  let released: String?
+  let backgroundImage: String?
+  let rating: Double?
+  let ratingsCount: Int?
+  let website: String?
+  let description: String?
+  
+  enum CodingKeys: String, CodingKey {
+    case id
+    case name
+    case released
+    case backgroundImage = "background_image"
+    case rating
+    case ratingsCount = "ratings_count"
+    case website
+    case description = "description_raw"
+  }
 }
 
 struct GameList: Codable {
-  var results: [Game]
+  let results: [Game]
 }
