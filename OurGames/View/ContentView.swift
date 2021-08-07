@@ -8,15 +8,21 @@
 import SwiftUI
 
 struct ContentView: View {
+  let persistenceController: PersistenceController
+
   var body: some View {
     TabView {
-      ListGameView()
+      ListGameView(persistenceController: persistenceController)
         .tabItem {
           Label("Home", systemImage: "house.fill")
         }
-      SearchGameView()
+      SearchGameView(persistenceController: persistenceController)
         .tabItem {
           Label("Search", systemImage: "magnifyingglass")
+        }
+      FavoriteView(persistenceController: persistenceController)
+        .tabItem {
+          Label("Favorite", systemImage: "star")
         }
       AboutView()
         .tabItem {
@@ -32,6 +38,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
   static var previews: some View {
-    ContentView()
+    ContentView(persistenceController: PersistenceController())
   }
 }

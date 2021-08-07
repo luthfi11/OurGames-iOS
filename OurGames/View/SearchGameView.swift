@@ -10,6 +10,7 @@ import SwiftUI
 struct SearchGameView: View {
   @State private var query = ""
   @ObservedObject var gameViewModel = GamesViewModel()
+  let persistenceController: PersistenceController
   
   var body: some View {
     NavigationView {
@@ -26,9 +27,14 @@ struct SearchGameView: View {
           ProgressView()
             .frame(width: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
         } else {
-          ForEach(gameViewModel.gameList.results, id: \.id) { game in
-            NavigationLink(destination: GameDetailView(id: game.id)) {
-              GameRow(game: game)
+          if gameViewModel.gameList.results.isEmpty && query != "" {
+            Text("Game \(query) tidak ditemukan")
+              .padding(10)
+          } else {
+            ForEach(gameViewModel.gameList.results, id: \.id) { game in
+              NavigationLink(destination: GameDetailView(persistenceController: persistenceController, id: game.id)) {
+                GameRow(game: game)
+              }
             }
           }
         }
@@ -40,6 +46,6 @@ struct SearchGameView: View {
 
 struct SearchGameView_Previews: PreviewProvider {
   static var previews: some View {
-    SearchGameView()
+    SearchGameView(persistenceController: PersistenceController())
   }
 }

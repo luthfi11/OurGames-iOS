@@ -9,9 +9,9 @@ import SwiftUI
 
 @main
 struct OurGamesApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
+  var body: some Scene {
+    WindowGroup {
+      ContentView(persistenceController: PersistenceController())
     }
+  }
 }

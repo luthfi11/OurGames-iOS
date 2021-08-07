@@ -9,7 +9,8 @@ import SwiftUI
 
 struct ListGameView: View {
   @ObservedObject var gameViewModel = GamesViewModel()
-  private var gridItem = [GridItem(.flexible()), GridItem(.flexible())]
+  let gridItem = [GridItem(.flexible()), GridItem(.flexible())]
+  let persistenceController: PersistenceController
   
   var body: some View {
     NavigationView {
@@ -20,7 +21,7 @@ struct ListGameView: View {
         } else {
           LazyVGrid(columns: gridItem) {
             ForEach(gameViewModel.gameList.results, id: \.id) { game in
-              NavigationLink(destination: GameDetailView(id: game.id)) {
+              NavigationLink(destination: GameDetailView(persistenceController: persistenceController, id: game.id)) {
                 GameGrid(game: game)
               }
             }
@@ -30,7 +31,9 @@ struct ListGameView: View {
       }
       .navigationBarTitle("Home", displayMode: .inline)
       .onAppear {
-        self.gameViewModel.getGames(query: "")
+        if gameViewModel.gameList.results.isEmpty {
+          self.gameViewModel.getGames(query: "")
+        }
       }
     }
   }
@@ -38,6 +41,6 @@ struct ListGameView: View {
 
 struct ListGameView_Previews: PreviewProvider {
   static var previews: some View {
-    ListGameView()
+    ListGameView(persistenceController: PersistenceController())
   }
 }

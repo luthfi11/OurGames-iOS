@@ -10,7 +10,15 @@ import URLImage
 
 struct GameDetailView: View {
   @ObservedObject var gameViewModel = GamesViewModel()
+  let persistenceController: PersistenceController
   var id: Int
+  @State private var isDataExist = false
+  @State private var showSuccessAlert = false
+  @State private var successMessage = ""
+  
+  private func checkData() {
+    isDataExist = persistenceController.checkGameExist(self.id)
+  }
   
   var body: some View {
     ScrollView {
@@ -23,12 +31,12 @@ struct GameDetailView: View {
             EmptyView()
           } inProgress: { _ in
             Color.gray
-            .frame(maxWidth: .infinity)
-            .frame(height: 200)
+              .frame(maxWidth: .infinity)
+              .frame(height: 200)
           } failure: { _, _ in
             Color.gray
-            .frame(maxWidth: .infinity)
-            .frame(height: 200)
+              .frame(maxWidth: .infinity)
+              .frame(height: 200)
           } content: { image in
             image
               .resizable()
@@ -37,6 +45,7 @@ struct GameDetailView: View {
               .aspectRatio(contentMode: .fit)
           }
         }
+        
         Text(gameViewModel.gameDetail?.name ?? "-")
           .font(.title)
           .padding(5)
@@ -77,8 +86,36 @@ struct GameDetailView: View {
       }
     }
     .navigationBarTitle("Game Detail", displayMode: .inline)
+    .toolbar {
+      ToolbarItem(placement: .navigationBarTrailing) {
+        Button(isDataExist ? "Delete" : "Save") {
+          if gameViewModel.gameDetail != nil {
+            if isDataExist {
+              persistenceController.deleteGame(id) { message in
+                successMessage = message
+                showSuccessAlert.toggle()
+              }
+            } else {
+              persistenceController.saveGame(gameViewModel.gameDetail!) { message in
+                successMessage = message
+                showSuccessAlert.toggle()
+              }
+            }
+            checkData()
+          }
+        }
+      }
+    }
+    .alert(isPresented: $showSuccessAlert) {
+      Alert(
+        title: Text("Success"),
+        message: Text(successMessage),
+        dismissButton: .default(Text("Got it!"))
+      )
+    }
     .onAppear {
       self.gameViewModel.getGameDetail(id: id)
+      checkData()
     }
   }
 }
